@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.sample.notify"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    //mapy
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.libraries.places:places-compat:1.1.0'
+    //firebase
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
+    implementation 'com.google.firebase:firebase-core:16.0.8'       //Analytics
+    implementation 'com.google.firebase:firebase-auth:19.0.0'       //Authentication
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'  //Cloud Firestore
+    implementation 'com.google.firebase:firebase-storage:19.0.0'
+    implementation 'com.google.firebase:firebase-database:19.0.0'
+
+    implementation 'com.alex-zaitsev:meternumberpicker:1.0.5'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.hbb20:ccp:2.2.9'
+    implementation 'com.github.shrikanth7698:Collapsible-Calendar-View-Android:v1.0.0'
+    implementation 'com.shuhart.stepview:stepview:1.2.8'
+    implementation 'com.chaos.view:pinview:1.3.2'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.github.santalu:mask-edittext:1.0.2'
+    implementation 'com.mikhaellopez:circularimageview:4.0.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.github.tiper:MaterialSpinner:1.3.3'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation "androidx.viewpager:viewpager:1.0.0"
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+}
+
+apply plugin: 'com.google.gms.google-services'

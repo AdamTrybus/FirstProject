@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Test app</string>
+    <string name="map_key" translatable="false">AIzaSyCg3psoq3Afb8KdC4Kx1Iawa4G5cv76AS8</string>
+
+    <string-array name="spinner_przedmiot">
+        <item>Matematyka</item>
+        <item>Angielski</item>
+        <item>Hiszpański</item>
+        <item>Polski</item>
+    </string-array>
+    <string-array name="spinner_poziom">
+        <item>Szkoła podstawowa</item>
+        <item>Liceum</item>
+        <item>Technikum</item>
+    </string-array>
+    <string name="nav_close">Zamknij</string>
+    <string name="nav_open">Otwórz</string>
+
+    <string name="lorem_ipsum">Masz 24h na bezpłatne anulowanie lekcji oraz ewentualną zmiany lokalizacji. Swoje prawa oraz dodatkowe informacje znajdziesz na naszej stronie internetowej.</string>
+</resources>

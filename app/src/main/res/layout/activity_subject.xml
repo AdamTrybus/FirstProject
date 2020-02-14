@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubjectActivity">
+
+    <com.tiper.MaterialSpinner
+        android:id="@+id/material_spinner_przedmiot"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="15dp"
+        android:hint="Wybierz przedmiot"
+        app:spinnerMode="dropdown" />
+
+    <RadioGroup
+        android:id="@+id/rdbGroupZakres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:layout_alignLeft="@+id/material_spinner_przedmiot"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/material_spinner_przedmiot"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Podstawowy"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text=" Rozszerzony"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_subject"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="44dp"
+        android:background="#d67601"
+        android:text="DALEJ"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:layout_alignParentBottom="true"
+        android:textSize="18sp"/>
+</RelativeLayout>
