@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.lekcje:
                 intent1 = new Intent(MainActivity.this, LessonsActivity.class);
                 break;
+            case R.id.mojeLekcje:
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         startActivity(intent1);

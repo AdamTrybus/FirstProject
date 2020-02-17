@@ -47,8 +47,11 @@ public class SubjectActivity extends AppCompatActivity {
                 int selectedId = group.getCheckedRadioButtonId();
                 RadioButton rb=(RadioButton)findViewById(selectedId);
                 Intent intent = new Intent(SubjectActivity.this,MapActivity.class);
-                intent.putExtra(MapActivity.PRZEDMIOT,przedmiot+" - "+rb.getText());
-                startActivity(intent);
+                if (przedmiot!=null) {
+                    intent.putExtra(MapActivity.PRZEDMIOT, przedmiot + " - " + rb.getText());
+                    startActivity(intent);
+                }else
+                    materialSpinner.setError("Wybierz przedmiot!");
 
             }
         });

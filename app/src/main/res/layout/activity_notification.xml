@@ -6,20 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:primaryColor="@android:color/white"
-        app:textColor="@android:color/black"
-        app:selectedItem_textColor="@android:color/white"
-        android:id="@+id/collapsibleCalendarView"
-        app:todayItem_textColor="@android:color/black"
-        app:todayItem_background="@drawable/circle_stroke"
-        app:selectedItem_background="@drawable/circle_background"
-        app:buttonLeft_drawableTintColor="@android:color/black"
-        app:buttonRight_drawableTintColor="@android:color/black"
-        app:expandIconColor="@android:color/black"
-        android:elevation="4dp"/>
+        android:layout_margin="12dp"
+        android:padding="6dp"
+        android:background="#FFA000">
+
+        <TextView
+            android:id="@+id/nameOfWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true"
+            android:drawableLeft="@drawable/rewind"
+            android:drawableRight="@drawable/fast_forward"
+            android:focusable="true"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Sobota"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameOfWeek"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:text="24 Kwietnia"
+            android:textSize="12sp" />
+    </RelativeLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

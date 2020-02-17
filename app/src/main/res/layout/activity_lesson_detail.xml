@@ -106,16 +106,38 @@
             android:background="@color/cardview_dark_background"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/btnData"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:drawableLeft="@drawable/left_icon"
-            android:drawableRight="@drawable/right_icon"
-            android:fontFamily="monospace"
-            android:text="Sobota (27.01)"
-            android:textSize="18sp" />
+            android:padding="6dp"
+            android:background="#FFA000">
+
+            <TextView
+                android:id="@+id/nameOfWeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:drawableLeft="@drawable/rewind"
+                android:drawableRight="@drawable/fast_forward"
+                android:focusable="true"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:text="Sobota"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameOfWeek"
+                android:fontFamily="sans-serif-smallcaps"
+                android:gravity="center"
+                android:text="24 Kwietnia"
+                android:textSize="10sp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

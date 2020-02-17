@@ -19,6 +19,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,10 @@ import com.sample.notify.Adapters.LessonTimeAdapter;
 import com.sample.notify.BaseClasses.LessonInProgres;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +59,7 @@ public class LessonsDetailActivity extends AppCompatActivity implements OnMapRea
     SupportMapFragment mapView;
     LessonTimeAdapter dataAdapter;
     RecyclerView recyclerView;
-    Button btnData;
+    TextView txtNameDay,txtDate;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +91,16 @@ public class LessonsDetailActivity extends AppCompatActivity implements OnMapRea
 
             }
         });
-        btnData = findViewById(R.id.btnData);
-        btnData.setOnTouchListener(new View.OnTouchListener() {
+        txtNameDay = findViewById(R.id.nameOfWeek);
+        txtDate = findViewById(R.id.date);
+        txtNameDay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_LEFT = 0;
                 final int DRAWABLE_RIGHT = 2;
 
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (btnData.getRight() - btnData.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if(event.getRawX() >= (txtNameDay.getRight() - txtNameDay.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if(i<(time.length-1)){
                             i++;
                         }else {
@@ -102,7 +108,7 @@ public class LessonsDetailActivity extends AppCompatActivity implements OnMapRea
                         }
                         setRecycler();
                         return true;
-                    }else if(event.getRawX() >= (btnData.getLeft() - btnData.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())){
+                    }else if(event.getRawX() >= (txtNameDay.getLeft() - txtNameDay.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())){
                         if(i==0){
                             i= time.length - 1;
                         }else {
@@ -180,7 +186,8 @@ public class LessonsDetailActivity extends AppCompatActivity implements OnMapRea
         recyclerView.setAdapter(dataAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(this,1);
         recyclerView.setLayoutManager(layoutManager);
-        btnData.setText(data[i]);
+        txtNameDay.setText(getNameOfDay(getDate(data[i])));
+        txtDate.setText(getMonth(getDate(data[i])));
     }
 
     @Override
@@ -188,5 +195,94 @@ public class LessonsDetailActivity extends AppCompatActivity implements OnMapRea
         super.onAttachedToWindow();
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
         manager.registerReceiver(buttonAccept,new IntentFilter(LessonTimeAdapter.KEY_BUTTON_ENABLE));
+    }
+    private String getNameOfDay(Date date){
+        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,1);
+        if(date.getDay()==cal.getTime().getDay())
+            dayOfWeek = "Jutro";
+        Log.d("TAG",cal.getTime()+"");
+        Log.d("TAG",date+"");
+        switch (dayOfWeek) {
+            case "Monday":
+                dayOfWeek = "Poniedziałek";
+                break;
+            case "Tuesday":
+                dayOfWeek = "Wtorek";
+                break;
+            case "Wednesday":
+                dayOfWeek = "Środa";
+                break;
+            case "Thursday":
+                dayOfWeek = "Czwartek";
+                break;
+            case "Friday":
+                dayOfWeek = "Piątek";
+                break;
+            case "Saturday":
+                dayOfWeek = "Sobota";
+                break;
+            case "Sunday":
+                dayOfWeek = "Niedziela";
+        }
+        return dayOfWeek;
+    }
+    private String getMonth(Date date){
+        String string = "month";
+        Calendar cal = Calendar.getInstance();
+        String month= new SimpleDateFormat("MM", Locale.ENGLISH).format(date);
+        String day = new SimpleDateFormat("dd", Locale.ENGLISH).format(date);
+        switch (Integer.parseInt(month)){
+            case 1:
+                string="Styczeń";
+                break;
+            case 2:
+                string="Luty";
+                break;
+            case 3:
+                string="Marzec";
+                break;
+            case 4:
+                string="Kwiecień";
+                break;
+            case 5:
+                string="Maj";
+                break;
+            case 6:
+                string="Czerwiec";
+                break;
+            case 7:
+                string="Lipiec";
+                break;
+            case 8:
+                string="Sierpień";
+                break;
+            case 9:
+                string="Wrzesień";
+                break;
+            case 10:
+                string="Październik";
+                break;
+            case 11:
+                string="Listopad";
+                break;
+            case 12:
+                string="Grudzień";
+                break;
+        }
+        return day +" "+string;
+    }
+    private Date getDate(String dateInString){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date=null;
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(formatter.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

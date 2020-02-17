@@ -1,10 +1,13 @@
 package com.sample.notify;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,11 +39,16 @@ import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity{
@@ -68,6 +76,10 @@ public class NotificationActivity extends AppCompatActivity{
     private String poziom;
     long childNumber=0;
     FirebaseUser user;
+    String[] datesInRange;
+    int i=0;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,55 +94,48 @@ public class NotificationActivity extends AppCompatActivity{
         days = new StringBuilder();
         hours=new StringBuilder();
         setmAdapter();
-        collapsibleCalendar = findViewById(R.id.collapsibleCalendarView);
-        Calendar today=new GregorianCalendar();
-        data = today.get(Calendar.DAY_OF_MONTH)+"/"+today.get(Calendar.MONTH)+"/"+today.get(Calendar.YEAR);
-        collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
+        final TextView txtNameDay = findViewById(R.id.nameOfWeek);
+        final TextView txtDate = findViewById(R.id.date);
+        getDatesBetween();
+        data = datesInRange[i];
+        txtNameDay.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onDaySelect() {
-                if(!results().isEmpty()) {
-                    days.append(data).append("\n");
-                    hours.append(results()).append("\n");
-                }
-                data = collapsibleCalendar.getSelectedDay().getDay() + "/" + collapsibleCalendar.getSelectedDay().getMonth() + "/" + collapsibleCalendar.getSelectedDay().getYear();
-                setmAdapter();
-                String[] dni = days.toString().split("\n");
-                String[] godziny = hours.toString().split("\n");
-                int xz=0;
-                for(String s : dni){
-                    if (s.equals(data)){
-                        s = days.toString().replace(data+"\n","");
-                        days = new StringBuilder();
-                        days.append(s);
-                        godziny[xz] ="";
-                        hours = new StringBuilder();
-                        for (String z : godziny){
-                            if (!z.equals(""))
-                                hours.append(z+"\n");
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_RIGHT = 2;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (txtNameDay.getRight() - txtNameDay.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if(!results().isEmpty()) {
+                            days.append(data).append("\n");
+                            hours.append(results()).append("\n");
                         }
+                        if(i<(datesInRange.length-1))
+                            i++;
+                        else
+                            i=0;
+
+                        addDate();
+                        txtNameDay.setText(getNameOfDay(getDate(datesInRange[i])));
+                        txtDate.setText(getMonth(getDate(datesInRange[i])));
+                        return true;
+                    }else if(event.getRawX() >= (txtNameDay.getLeft() - txtNameDay.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())){
+                        if(!results().isEmpty()) {
+                            days.append(data).append("\n");
+                            hours.append(results()).append("\n");
+                        }
+                        if(i==0)
+                            i= datesInRange.length - 1;
+                        else
+                            i-=1;
+
+                        addDate();
+                        txtNameDay.setText(getNameOfDay(getDate(datesInRange[i])));
+                        txtDate.setText(getMonth(getDate(datesInRange[i])));
+                        return true;
                     }
-                    xz++;
                 }
-            }
-
-            @Override
-            public void onItemClick(View v) {
-
-            }
-
-            @Override
-            public void onDataUpdate() {
-
-            }
-
-            @Override
-            public void onMonthChange() {
-
-            }
-
-            @Override
-            public void onWeekChange(int position) {
-
+                return false;
             }
         });
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +240,6 @@ public class NotificationActivity extends AppCompatActivity{
             }
         });
     }
-
     private List<Model> getListData() {
         mModelList = new ArrayList<>();
         for (int i = 8; i <=20 ; i++) {
@@ -291,6 +295,137 @@ public class NotificationActivity extends AppCompatActivity{
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
+    private void addDate(){
+        data = datesInRange[i];
+        setmAdapter();
+        String[] dni = days.toString().split("\n");
+        String[] godziny = hours.toString().split("\n");
+        int xz=0;
+        for(String s : dni){
+            if (s.equals(data)){
+                s = days.toString().replace(data+"\n","");
+                days = new StringBuilder();
+                days.append(s);
+                godziny[xz] ="";
+                hours = new StringBuilder();
+                for (String z : godziny){
+                    if (!z.equals(""))
+                        hours.append(z+"\n");
+                }
+            }
+            xz++;
+        }
+    }
+    private void getDatesBetween() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 1);
+        Date startDate = c.getTime();
+        c.add(Calendar.DATE,5);
+        Date endDate=c.getTime();
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(endDate);
+        datesInRange = new String[5];
+        int y=0;
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            datesInRange[y] = dateFormat.format(result);
+            calendar.add(Calendar.DATE, 1);
+            y++;
+        }
+    }
+    private String getNameOfDay(Date date){
+        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,1);
+        if(date.getDay()==cal.getTime().getDay())
+            dayOfWeek = "Jutro";
+        Log.d("TAG",cal.getTime()+"");
+        Log.d("TAG",date+"");
+        switch (dayOfWeek) {
+            case "Monday":
+                dayOfWeek = "Poniedziałek";
+                break;
+            case "Tuesday":
+                dayOfWeek = "Wtorek";
+                break;
+            case "Wednesday":
+                dayOfWeek = "Środa";
+                break;
+            case "Thursday":
+                dayOfWeek = "Czwartek";
+                break;
+            case "Friday":
+                dayOfWeek = "Piątek";
+                break;
+            case "Saturday":
+                dayOfWeek = "Sobota";
+                break;
+            case "Sunday":
+                dayOfWeek = "Niedziela";
+        }
+        return dayOfWeek;
+    }
+    private String getMonth(Date date){
+        String string = "month";
+        Calendar cal = Calendar.getInstance();
+        String month= new SimpleDateFormat("MM", Locale.ENGLISH).format(date);
+        String day = new SimpleDateFormat("dd", Locale.ENGLISH).format(date);
+        switch (Integer.parseInt(month)){
+            case 1:
+                string="Styczeń";
+                break;
+            case 2:
+                string="Luty";
+                break;
+            case 3:
+                string="Marzec";
+                break;
+            case 4:
+                string="Kwiecień";
+                break;
+            case 5:
+                string="Maj";
+                break;
+            case 6:
+                string="Czerwiec";
+                break;
+            case 7:
+                string="Lipiec";
+                break;
+            case 8:
+                string="Sierpień";
+                break;
+            case 9:
+                string="Wrzesień";
+                break;
+            case 10:
+                string="Październik";
+                break;
+            case 11:
+                string="Listopad";
+                break;
+            case 12:
+                string="Grudzień";
+                break;
+        }
+        return day +" "+string;
+    }
+    private Date getDate(String dateInString){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date=null;
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(formatter.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }
 

@@ -4,7 +4,12 @@
         <item
             android:id="@+id/lekcje"
             android:icon="@android:drawable/ic_menu_my_calendar"
-            android:title="Nadchodzące lekcje"
+            android:title="Lekcje do wzięcia"
+            android:checked="true"/>
+        <item
+            android:id="@+id/mojeLekcje"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Moje lekcje"
             android:checked="true"/>
     </group>
 </menu>
